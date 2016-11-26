@@ -30,9 +30,10 @@ def index(request):
          deviceTable += "<tr><td>%(IPAddr)s</td><td>%(Descr)s</td><td>%(State)s</td><td>%(LastStateChange)s</td><td>%(SuppressCount)d</td><td>%(CurrentSuppressCount)d</td></tr>" % row
       deviceTable += '</table>'
 
+      header = '<html><head><title>IoT Monitor Current State</title></head><body>'
       footer = '<p><a href="/iotmon/log">View Log</a>'
 
-      return HttpResponse("<h3>Current Device Monitoring info</h3>\n"+deviceTable+footer)
+      return HttpResponse(header+"<h3>Current Device Monitoring info</h3>\n"+deviceTable+footer)
 
 
 
@@ -62,7 +63,7 @@ def log(request):
          deviceTable += "<tr><td>%(LogDate)s</td><td>%(IPAddr)s</td><td>%(Descr)s</td><td>%(PreviousState)s</td><td>%(CurrentState)s</td></tr>" % row
       deviceTable += '</table>'
 
-      header = '<html><head><title>IoT Monitor</title></head><body>'
+      header = '<html><head><title>IoT Monitor Log</title></head><body>'
       footer = '<p><a href="/iotmon">Back</a></body></html>'
 
       return HttpResponse(header+"<h3>Device Monitoring Log</h3>\n"+deviceTable+footer)
