@@ -1,13 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from django.core.urlresolvers import reverse
 
 import sqlite3 as lite
+
+# import the logging library
+import logging
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
 def index(request):
 
+   logger.info("entering views.index")
+
+   # https://docs.djangoproject.com/en/1.10/intro/tutorial03/
 
    #-----------------------------------------------------------------------------------
    # Connect to iotmon device database
@@ -25,16 +34,16 @@ def index(request):
       cursor.execute("SELECT * FROM Devices ORDER BY State, Descr")
       rows = cursor.fetchall()
 
-   template = loader.get_template('iotmonui/index.html')
    context = {
       'rows': rows,
    }
-   return HttpResponse(template.render(context, request))
+   return render(request, 'iotmonui/index.html', context)
 
 
 
 def log(request):
 
+   logger.info("entering views.log")
 
    #-----------------------------------------------------------------------------------
    # Connect to iotmon device database
@@ -52,6 +61,12 @@ def log(request):
       cursor.execute("SELECT * FROM Log ORDER BY LogDate Desc")
       rows = cursor.fetchall()
 
+   context = {
+      'rows': rows,
+   }
+   return render(request, 'iotmonui/log.html', context)
+
+   if False:
       deviceTable = '<table>'
       deviceTable += "<tr><th>LogDate</th><th>IPAddr</th><th>Descr</th><th>PreviousState</th><th>CurrentState</th></tr>"
       for row in rows:
@@ -67,6 +82,6 @@ def log(request):
          </head>
          <body>
       '''
-      footer = '<p><a href="/iotmon">Back</a></body></html>'
+      footer = '<p><a href="'+reverse('iotmonui:index')+'">Back</a></body></html>'
 
       return HttpResponse(header+"<h3>Device Monitoring Log</h3>\n"+deviceTable+footer)

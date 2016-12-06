@@ -2,7 +2,7 @@
 <html>
 <head>
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>IoT Monitor Current State</title>
+   <title>IoT Monitor Log</title>
 
    <!-- the following are need for DataTables -->
    <script language=JavaScript  src="https://code.jquery.com/jquery-1.12.3.js"></script>
@@ -17,10 +17,6 @@ $(document).ready(function() {
       select: true,
       paging: false,
       dom: 'BilfrtBip',
-      columnDefs: [
-         { responsivePriority: 1, targets: 1 },
-         { responsivePriority: 2, targets: 2 },
-      ],
       "order": [],
       buttons: [ 'copy', 'csv', 'excel' ]
    } );
@@ -31,27 +27,27 @@ $(document).ready(function() {
 </head>
 <body>
 
-<h3>IoT Monitor - Current Device State</h3>
+<h3>IoT Monitor - Device Monitoring Log</h3>
 
 {% if rows %}
    <table class="datatable display compact nowrap" cellspacing="0" width="100%">
 
    <thead>
-   <tr><th>IPAddr</th><th>Descr</th><th>State</th><th>LastStateChange</th><th>SuppressCount</th><th>CurrentSuppressCount</th></tr>
+   <tr><th>LogDate</th><th>IPAddr</th><th>Descr</th><th>PreviousState</th><th>CurrentState</th></tr>
    </thead>
 
    <tbody>
    {% for row in rows %}
-      <tr><td>{{ row.IPAddr }}</td><td>{{ row.Descr }}</td><td>{{ row.State }}</td><td>{{ row.LastStateChange }}</td><td>{{ row.SuppressCount }}</td><td>{{ row.CurrentSuppressCount }}</td></tr>
+      <tr><td>{{ row.LogDate }}</td><td>{{ row.IPAddr }}</td><td>{{ row.Descr }}</td><td>{{ row.PreviousState }}</td><td>{{ row.CurrentState }}</td></tr>
    {% endfor %}
    </tbody>
 
    </table>
 {% else %}
-    <p>No devices are being monitored.</p>
+    <p>No device log records.</p>
 {% endif %}
 
-<p><a href="/iotmon/log">View Log</a></p>
+<p><a href="/iotmon">Back</a></p>
 
 </body>
 </html>
