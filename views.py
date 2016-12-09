@@ -4,6 +4,7 @@ from django.template import loader
 from django.core.urlresolvers import reverse
 
 import sqlite3 as lite
+import itertools
 
 # import the logging library
 import logging
@@ -32,7 +33,16 @@ def index(request):
       cursor = db.cursor()
 
       cursor.execute("SELECT * FROM Devices ORDER BY State, Descr")
-      rows = cursor.fetchall()
+      dbrows = cursor.fetchall()
+
+      # convert sqlite dbrows into a true dict that can be added to
+      rows = []
+      for dbrow in dbrows:
+         rows.append(dict(dbrow))
+
+      # set new item, StateStyle based on State
+      for row in rows:
+         row["StateStyle"] = "state"+row["State"]
 
    context = {
       'rows': rows,
@@ -59,7 +69,16 @@ def log(request):
       cursor = db.cursor()
 
       cursor.execute("SELECT * FROM Log ORDER BY LogDate Desc")
-      rows = cursor.fetchall()
+      dbrows = cursor.fetchall()
+
+      # convert sqlite dbrows into a true dict that can be added to
+      rows = []
+      for dbrow in dbrows:
+         rows.append(dict(dbrow))
+
+      # set new item, StateStyle based on State
+      for row in rows:
+         row["StateStyle"] = "state"+row["CurrentState"]
 
    context = {
       'rows': rows,

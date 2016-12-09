@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Datatables 
+static/iotmonui/datatables
+
+D
+/usr/local/src/djangodev/iotmonui/static/iotmonui/datatables

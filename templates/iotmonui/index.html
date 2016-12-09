@@ -5,10 +5,9 @@
    <title>IoT Monitor Current State</title>
 
    <!-- the following are need for DataTables -->
-   <script language=JavaScript  src="https://code.jquery.com/jquery-1.12.3.js"></script>
-   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
-   <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-   <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+   {% load staticfiles %}
+   <link rel="stylesheet" type="text/css" href="{% static 'iotmonui/datatables/datatables.min.css' %}" />
+   <script type="text/javascript" src="{% static 'iotmonui/datatables/datatables.min.js' %}"></script>
 
 <script>
 $(document).ready(function() {
@@ -16,17 +15,23 @@ $(document).ready(function() {
       responsive: true,
       select: true,
       paging: false,
-      dom: 'BilfrtBip',
+      dom: 'ilfrtBip',
       columnDefs: [
-         { responsivePriority: 1, targets: 1 },
+         { responsivePriority: 1, targets: 0 },
          { responsivePriority: 2, targets: 2 },
       ],
       "order": [],
-      buttons: [ 'copy', 'csv', 'excel' ]
+      buttons: [ 'copy', 'excel' ]
    } );
-   //new $.fn.dataTable.FixedHeader( table );
+   new $.fn.dataTable.FixedHeader( table );
 } );
 </script>
+
+<style>
+   .stateUP      {color:green;}
+   .statePENDING {color:blue;}
+   .stateDOWN    {color:red;}
+</style>
 
 </head>
 <body>
@@ -37,12 +42,12 @@ $(document).ready(function() {
    <table class="datatable display compact nowrap" cellspacing="0" width="100%">
 
    <thead>
-   <tr><th>IPAddr</th><th>Descr</th><th>State</th><th>LastStateChange</th><th>SuppressCount</th><th>CurrentSuppressCount</th></tr>
+   <tr><th>Descr</th><th>IPAddr</th><th>State</th><th>LastStateChange</th><th>SuppressCount</th><th>CurrentSuppressCount</th></tr>
    </thead>
 
    <tbody>
    {% for row in rows %}
-      <tr><td>{{ row.IPAddr }}</td><td>{{ row.Descr }}</td><td>{{ row.State }}</td><td>{{ row.LastStateChange }}</td><td>{{ row.SuppressCount }}</td><td>{{ row.CurrentSuppressCount }}</td></tr>
+      <tr class={{ row.StateStyle }}><td>{{ row.Descr }}</td><td>{{ row.IPAddr }}</td><td>{{ row.State }}</td><td>{{ row.LastStateChange }}</td><td>{{ row.SuppressCount }}</td><td>{{ row.CurrentSuppressCount }}</td></tr>
    {% endfor %}
    </tbody>
 
@@ -51,7 +56,7 @@ $(document).ready(function() {
     <p>No devices are being monitored.</p>
 {% endif %}
 
-<p><a href="/iotmon/log">View Log</a></p>
+<p><a href="{% url 'iotmonui:log' %}">View Log</a></p>
 
 </body>
 </html>
